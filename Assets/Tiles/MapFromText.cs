@@ -8,11 +8,12 @@ public class MapFromText : MonoBehaviour
 {
 
 	
-	GameObject[,,] map = new GameObject[20, 100, 100];
+	public GameObject[,,] map = new GameObject[20, 100, 100];
 
 	public GameObject hexTilePrefab = null;
 	public GameObject voidTile = null;
 	string filename = "turretRocks.txt";
+	private GameLogic logic;
 
 
 
@@ -48,6 +49,7 @@ public class MapFromText : MonoBehaviour
 							} else {
 								tileObject.transform.position = new Vector3 (x * 1.7f + .85f, y * .5f, z * 1.5f);
 							}
+							//yield return new WaitForSeconds (0.000f);
 						}
 						if (tile.Equals ("v")) {
 							GameObject tileObject = (GameObject)Instantiate (voidTile, Vector3.zero, Quaternion.identity);
@@ -60,12 +62,11 @@ public class MapFromText : MonoBehaviour
 							} else {
 								tileObject.transform.position = new Vector3 (x * 1.7f + .85f, y * .5f, z * 1.5f);
 							}
+							yield return new WaitForSeconds (0.00f);
 						}
 						x += 1;
-						yield return new WaitForSeconds (0.001f);
+
 					}
-					//Debug.Log ("rows lenght" + rows.Length);
-					//Debug.Log ("row is : " + row);
 					if (! string.IsNullOrEmpty (row)) {
 						z += 1;
 					}
@@ -75,11 +76,14 @@ public class MapFromText : MonoBehaviour
 			}
 			
 		}
+
+		logic.mapLoaded = true;
 	}
 
 	// Use this for initialization
 	void Start ()
 	{
+		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
 		StartCoroutine (BuildMap ());
 	
 	}

@@ -8,6 +8,7 @@ public class HeroInfo : MonoBehaviour
 	public float deffense;
 	public float move;
 	public float height;
+	public int player;
 
 	private GameLogic logic;
 
