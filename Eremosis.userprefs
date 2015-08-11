@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Tiles\TileInfo.cs">
+    <Files>
+      <File FileName="Assets\randomScripts\CameraMovement.cs" Line="32" Column="1" />
+      <File FileName="Assets\Tiles\MapFromText.cs" Line="56" Column="41" />
+      <File FileName="Assets\Tiles\TileInfo.cs" Line="36" Column="38" />
+      <File FileName="Assets\Heros\HeroInfo.cs" Line="30" Column="6" />
+      <File FileName="Assets\randomScripts\GameLogic.cs" Line="39" Column="37" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
