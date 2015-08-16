@@ -15,7 +15,6 @@ public class GameLogic : MonoBehaviour
 	public List<List<GameObject>> armies = new List<List<GameObject>> ();
 	private HeroInfo selectedObject;
 	public bool mapLoaded = false;
-	private GameLogic logic ;
 	public GameObject Hero;
 
 	private GameObject[,,] map;
@@ -48,9 +47,10 @@ public class GameLogic : MonoBehaviour
 				GameObject hero = (GameObject)Instantiate (Hero, Vector3.zero, Quaternion.identity);
 				armies [i].Add (hero);
 				HeroInfo heroInfo = hero.GetComponent<HeroInfo> ();
-				GameObject tile = map [0, 0, h];
+				GameObject tile = map [2, i * 15, h];
 				TileInfo tileInfo = tile.GetComponentInChildren<TileInfo> ();
 				heroInfo.tile = tileInfo;
+				heroInfo.player = i + 1;
 				
 				Vector3 movePos = new Vector3 (tileInfo.transform.position.x, tileInfo.transform.position.y + 1.5f, tileInfo.transform.position.z);
 				tileInfo.UnitOnTile = hero;
@@ -68,6 +68,25 @@ public class GameLogic : MonoBehaviour
 	public void SetSelectedObject (HeroInfo gameObject)
 	{
 		this.selectedObject = gameObject;
+	}
+
+	public void addHeroToTile (GameObject hero, GameObject tile)
+	{
+		HeroInfo heroInfo = hero.GetComponentInChildren<HeroInfo> ();
+		if (heroInfo == null) {
+			Debug.Log ("unit passed was not a hero");
+			return;
+		}
+
+		TileInfo tileInfo = tile.GetComponent<TileInfo> ();
+		if (tileInfo == null) {
+			Debug.Log ("tile was not a tile");
+			return;
+		}
+
+		heroInfo.tile = tileInfo;
+		tileInfo.UnitOnTile = hero;
+
 	}
 
 	public void MoveSelected (TileInfo tileInfo)

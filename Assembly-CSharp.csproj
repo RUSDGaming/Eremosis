@@ -52,8 +52,11 @@
      <Compile Include="Assets\Tiles\MapHolder.cs" />
      <Compile Include="Assets\Tiles\TileInfo.cs" />
      <Compile Include="Assets\randomScripts\CameraMovement.cs" />
+     <Compile Include="Assets\randomScripts\DontKillMe.cs" />
      <Compile Include="Assets\randomScripts\GameLogic.cs" />
+     <Compile Include="Assets\randomScripts\LoadOnClick.cs" />
      <Compile Include="Assets\randomScripts\SaveScript.cs" />
+     <Compile Include="Assets\randomScripts\TeamSelection.cs" />
      <None Include="Assets\Tiles\turretRocks.txt" />
      <None Include="Assets\UVersionControl\README.txt" />
      <None Include="Assets\Tiles\testMap.txt" />

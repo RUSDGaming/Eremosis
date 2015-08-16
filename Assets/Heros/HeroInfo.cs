@@ -6,19 +6,40 @@ public class HeroInfo : MonoBehaviour
 
 	public float health;
 	public float deffense;
+	public float damage;
 	public float move;
 	public float height;
-	public int player;
-
+	public float range;
+	public float cost;
+	public int player = 1 ;
 	private GameLogic logic;
-
 	public TileInfo tile;
+	Renderer theRenderer;
+	public Material player1Mat;
+	public Material player2Mat;
+
 
 
 	// Use this for initialization
 	void Start ()
 	{	
 		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
+		theRenderer = gameObject.GetComponent<Renderer> ();
+
+		switch (player) {
+		case 1:
+			{
+				
+				theRenderer.material = player1Mat;
+				break;
+			}
+
+		case 2:
+			{
+				theRenderer.material = player2Mat;
+				break;
+			}
+		}
 	}
 	
 	// Update is called once per frame
