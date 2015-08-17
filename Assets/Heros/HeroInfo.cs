@@ -18,7 +18,7 @@ public class HeroInfo : MonoBehaviour
 	public Material player1Mat;
 	public Material player2Mat;
 
-
+	public Color startColor;
 
 	// Use this for initialization
 	void Start ()
@@ -49,12 +49,26 @@ public class HeroInfo : MonoBehaviour
 	
 	}
 
+	void OnMouseEnter ()
+	{
+		startColor = theRenderer.material.color;
+		theRenderer.material.color = Color.magenta;
+	}
+	void OnMouseExit ()
+	{
+		theRenderer.material.color = startColor;
+	}
+
 	void OnMouseOver ()
 	{
 
 		if (Input.GetMouseButtonDown (0)) {
 			Debug.Log ("unit was clicked");
 			logic.SetSelectedObject (this);
+		}
+		if (Input.GetMouseButtonDown (1)) {
+			Debug.Log ("unit was attacked");
+			logic.Attack (this);
 		}
 	}
 

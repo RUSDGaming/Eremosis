@@ -16,11 +16,15 @@ public class TileInfo : MonoBehaviour
 	public int z;
 	public GameObject UnitOnTile = null;
 
+	Renderer theRenderer;
+
 	private GameLogic logic;
+	public Color startColor;
 
 	// Use this for initialization
 	void Start ()
 	{
+		theRenderer = gameObject.GetComponent<Renderer> ();
 		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
 	}
 	
@@ -30,6 +34,22 @@ public class TileInfo : MonoBehaviour
 	
 	}
 
+	void OnMouseEnter ()
+	{
+		startColor = theRenderer.material.color;
+
+		if (logic.canHeroMoveToTile (logic.getSelectedObject (), this)) {
+			theRenderer.material.color = Color.green;
+		} else {
+			theRenderer.material.color = Color.red;
+		}
+
+	}
+	void OnMouseExit ()
+	{
+		theRenderer.material.color = startColor;
+	}
+
 	void OnMouseOver ()
 	{
 		//Debug.Log ("mouse clicked");
@@ -37,5 +57,7 @@ public class TileInfo : MonoBehaviour
 			Debug.Log ("Right Mouse Clicked");
 			logic.MoveSelected (this);
 		}
+
+
 	}
 }

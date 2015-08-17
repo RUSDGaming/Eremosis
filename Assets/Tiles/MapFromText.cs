@@ -12,7 +12,7 @@ public class MapFromText : MonoBehaviour
 
 	public GameObject hexTilePrefab = null;
 	public GameObject voidTile = null;
-	string filename = "turretRocks.txt";
+	string filename = "BigFlatMap.txt";
 	private GameLogic logic;
 
 

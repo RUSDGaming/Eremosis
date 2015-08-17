@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Heros\HeroInfo.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\randomScripts\GameLogic.cs">
     <Files>
-      <File FileName="Assets\randomScripts\LoadOnClick.cs" Line="12" Column="1" />
-      <File FileName="Assets\randomScripts\GameLogic.cs" Line="54" Column="5" />
-      <File FileName="Assets\Tiles\MapFromText.cs" Line="41" Column="14" />
-      <File FileName="Assets\Heros\HeroInfo.cs" Line="14" Column="7" />
+      <File FileName="Assets\randomScripts\TeamSelection.cs" Line="16" Column="22" />
+      <File FileName="Assets\randomScripts\GameLogic.cs" Line="52" Column="30" />
+      <File FileName="Assets\Tiles\MapFromText.cs" Line="15" Column="31" />
+      <File FileName="Assets\Heros\HeroInfo.cs" Line="1" Column="1" />
       <File FileName="Assets\Tiles\TileInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets\Tiles\BigFlatMap.txt" Line="23" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

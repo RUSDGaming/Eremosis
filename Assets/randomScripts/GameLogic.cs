@@ -5,19 +5,25 @@ using System.Collections.Generic;
 public class GameLogic : MonoBehaviour
 {
 
-	public enum player
+	public enum TurnState
 	{
-		player1,
-		player2
+		MOVE,
+		ATTACK
 	}
 
 
 	public List<List<GameObject>> armies = new List<List<GameObject>> ();
 	private HeroInfo selectedObject;
+
 	public bool mapLoaded = false;
 	public GameObject Hero;
 
 	private GameObject[,,] map;
+
+	private int playerTurn = 1;
+
+	private TurnState turnState = TurnState.MOVE;
+
 
 	// Use this for initialization
 	void Start ()
@@ -47,7 +53,7 @@ public class GameLogic : MonoBehaviour
 				GameObject hero = (GameObject)Instantiate (Hero, Vector3.zero, Quaternion.identity);
 				armies [i].Add (hero);
 				HeroInfo heroInfo = hero.GetComponent<HeroInfo> ();
-				GameObject tile = map [2, i * 15, h];
+				GameObject tile = map [0, i * 30, h];
 				TileInfo tileInfo = tile.GetComponentInChildren<TileInfo> ();
 				heroInfo.tile = tileInfo;
 				heroInfo.player = i + 1;
@@ -67,7 +73,15 @@ public class GameLogic : MonoBehaviour
 
 	public void SetSelectedObject (HeroInfo gameObject)
 	{
+		if (gameObject == this.selectedObject) {
+			this.selectedObject = null;
+			return;
+		}
 		this.selectedObject = gameObject;
+	}
+	public HeroInfo getSelectedObject ()
+	{
+		return this.selectedObject;
 	}
 
 	public void addHeroToTile (GameObject hero, GameObject tile)
@@ -85,7 +99,11 @@ public class GameLogic : MonoBehaviour
 		}
 
 		heroInfo.tile = tileInfo;
+
+
+		Vector3 movePos = new Vector3 (tileInfo.transform.position.x, tileInfo.transform.position.y + 1.5f, tileInfo.transform.position.z);
 		tileInfo.UnitOnTile = hero;
+		hero.transform.position = movePos;
 
 	}
 
@@ -93,12 +111,57 @@ public class GameLogic : MonoBehaviour
 	{
 		if (mapLoaded)
 		if (this.selectedObject != null) {
-			Vector3 movePos = new Vector3 (tileInfo.transform.position.x, tileInfo.transform.position.y + 1.5f, tileInfo.transform.position.z);
-			//tileInfo.GetComponent<HeroInfo> ().tile = tileInfo;
-			selectedObject.tile = tileInfo;
-			selectedObject.transform.position = movePos;
-			tileInfo.UnitOnTile = selectedObject.gameObject;
+
+			if (canHeroMoveToTile (selectedObject, tileInfo)) {
+				Vector3 movePos = new Vector3 (tileInfo.transform.position.x, tileInfo.transform.position.y + 1.5f, tileInfo.transform.position.z);
+				//tileInfo.GetComponent<HeroInfo> ().tile = tileInfo;
+				selectedObject.tile = tileInfo;
+				selectedObject.transform.position = movePos;
+				tileInfo.UnitOnTile = selectedObject.gameObject;
+			}
 
 		}
 	}
+
+	public void Attack (HeroInfo deffendant)
+	{
+		if (!mapLoaded) {
+			return;
+		}
+
+		if (this.selectedObject == null) {
+			return;
+		}
+		float damage = selectedObject.damage - deffendant.deffense;
+		if (damage > 0) {
+			deffendant.health -= damage;
+		}
+		if (deffendant.health < 0) {
+			GameObject.Destroy (deffendant.gameObject);
+		}
+
+	}
+
+	public bool canHeroMoveToTile (HeroInfo heroInfo, TileInfo tileInfo)
+	{
+		if (heroInfo == null || tileInfo == null) {
+			Debug.Log ("something was null");
+			return false;
+		}
+		TileInfo heroTile = heroInfo.tile;
+
+		float dX = tileInfo.x - heroTile.x;
+		float dY = tileInfo.y - heroTile.y;
+		float dZ = tileInfo.z - heroTile.z;
+
+		float d = Mathf.Abs (dX) + Mathf.Abs (dY) + Mathf.Abs (dZ);
+		if (d > heroInfo.move) {
+			return false;
+		}
+		return true;
+	}
+
+
+
+
 }

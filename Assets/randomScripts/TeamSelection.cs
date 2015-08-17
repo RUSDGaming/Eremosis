@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class TeamSelection : MonoBehaviour
 {
@@ -15,7 +16,11 @@ public class TeamSelection : MonoBehaviour
 	public int[] armies;
 	public GameObject[] panels; 
 
-	public GameObject Panel;
+	public GameObject melePanel;
+	public GameObject rangePanel;
+	public Text meleCount;
+	public Text rangeCount;
+	public Text total;
 
 
 	// Use this for initialization
@@ -32,12 +37,61 @@ public class TeamSelection : MonoBehaviour
 	}
 
 
-	void modUnit (int i)
+	public void addUnit (int i)
 	{
 		HeroInfo heroInfo = heroes [i].GetComponent<HeroInfo> ();
-		currentarmyCost += heroInfo.cost * i;
-		armies [i] += i;
+		currentarmyCost += heroInfo.cost;
+		armies [i] += 1;
+
+		switch (i) {
+		case 0:
+			{
+				float count = float.Parse (meleCount.text);				
+				meleCount.text = (count + heroInfo.cost) + "";
+				break;
+			}
+		case 1:
+			{
+				float count = float.Parse (rangeCount.text);	
+				rangeCount.text = (count + heroInfo.cost) + "";
+				break;
+			}
+		}
+		updateTotalText ();
+
 	}
+	public void removeUnit (int i)
+	{
+		HeroInfo heroInfo = heroes [i].GetComponent<HeroInfo> ();
+		currentarmyCost += heroInfo.cost;
+		armies [i] -= 1;
+
+		switch (i) {
+		case 0:
+			{
+				float count = float.Parse (meleCount.text);
+				meleCount.text = (count - heroInfo.cost) + "";
+				break;
+			}
+		case 1:
+			{
+				float count = float.Parse (rangeCount.text);
+				rangeCount.text = (count - heroInfo.cost) + "";
+				break;
+			}
+		}
+		updateTotalText ();
+	}
+
+	void updateTotalText ()
+	{
+		float totalValue = 0f;
+		totalValue += float.Parse (meleCount.text);
+		totalValue += float.Parse (rangeCount.text);
+		total.text = totalValue + "\\" + maxArmyCost;
+	}
+
+
 
 
 

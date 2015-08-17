@@ -57,6 +57,7 @@
      <Compile Include="Assets\randomScripts\LoadOnClick.cs" />
      <Compile Include="Assets\randomScripts\SaveScript.cs" />
      <Compile Include="Assets\randomScripts\TeamSelection.cs" />
+     <None Include="Assets\Tiles\BigFlatMap.txt" />
      <None Include="Assets\Tiles\turretRocks.txt" />
      <None Include="Assets\UVersionControl\README.txt" />
      <None Include="Assets\Tiles\testMap.txt" />
