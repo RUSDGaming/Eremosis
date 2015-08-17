@@ -14,6 +14,7 @@ public class TileInfo : MonoBehaviour
 	public int x;
 	public int y;
 	public int z;
+	public int h;
 	public GameObject UnitOnTile = null;
 
 	Renderer theRenderer;
@@ -47,7 +48,7 @@ public class TileInfo : MonoBehaviour
 	}
 	void OnMouseExit ()
 	{
-		theRenderer.material.color = startColor;
+		//theRenderer.material.color = startColor;
 	}
 
 	void OnMouseOver ()

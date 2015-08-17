@@ -42,8 +42,11 @@ public class GameLogic : MonoBehaviour
 			yield return new WaitForSeconds (.2f);
 		}
 
-		MapFromText mapfromtext = (MapFromText)FindObjectOfType (typeof(MapFromText));
-		map = mapfromtext.map;
+		//MapFromText mapfromtext = (MapFromText)FindObjectOfType (typeof(MapFromText));
+		//map = mapfromtext.map;
+
+		MapGenerator mapGenerator = (MapGenerator)FindObjectOfType (typeof(MapGenerator));
+		map = mapGenerator.map;
 
 		int heroCount = 8;
 		for (int i =0; i <armyCount; i++) {
@@ -54,6 +57,7 @@ public class GameLogic : MonoBehaviour
 				armies [i].Add (hero);
 				HeroInfo heroInfo = hero.GetComponent<HeroInfo> ();
 				GameObject tile = map [0, i * 30, h];
+				Debug.Log (tile);
 				TileInfo tileInfo = tile.GetComponentInChildren<TileInfo> ();
 				heroInfo.tile = tileInfo;
 				heroInfo.player = i + 1;
@@ -142,23 +146,42 @@ public class GameLogic : MonoBehaviour
 
 	}
 
+
+	//http://www.redblobgames.com/grids/hexagons/#range
 	public bool canHeroMoveToTile (HeroInfo heroInfo, TileInfo tileInfo)
 	{
+		if (!mapLoaded) {
+			Debug.Log ("map isnt loaded yet");
+			return false;
+		}
+
 		if (heroInfo == null || tileInfo == null) {
 			Debug.Log ("something was null");
 			return false;
 		}
 		TileInfo heroTile = heroInfo.tile;
 
-		float dX = tileInfo.x - heroTile.x;
-		float dY = tileInfo.y - heroTile.y;
-		float dZ = tileInfo.z - heroTile.z;
+		int dX = tileInfo.x - heroTile.x;
+		int dY = tileInfo.y - heroTile.y;
+		int dZ = tileInfo.z - heroTile.z;
+
+//		float d = Mathf.Pow (dX, 2) + Mathf.Pow (dY, 2) + Mathf.Pow (dZ, 2);
+//		Debug.Log ("dist is " + d);
+//		if (d <= Mathf.Pow (heroInfo.move, 2)) {
+//			return true;
+//		}
 
 		float d = Mathf.Abs (dX) + Mathf.Abs (dY) + Mathf.Abs (dZ);
-		if (d > heroInfo.move) {
-			return false;
+		Debug.Log (d);
+		d = d / 2;
+		Debug.Log ("distance: " + d);
+		Debug.Log ("hero move: " + heroInfo.move);
+
+		if (d <= heroInfo.move) {
+			return true;
 		}
-		return true;
+
+		return false;
 	}
 
 
