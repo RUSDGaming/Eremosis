@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class TileInfo : MonoBehaviour
+public class TileInfo : NetworkBehaviour
 {
 	public enum TileType
 	{
@@ -10,11 +11,23 @@ public class TileInfo : MonoBehaviour
 	}
 
 	public TileType type;
-	public bool occupied = false;
-	public int x;
-	public int y;
-	public int z;
-	public int h;
+
+	[SyncVar]
+	public bool
+		occupied = false;
+	[SyncVar]
+	public int
+		x;
+	[SyncVar]
+	public int
+		y;
+	[SyncVar]
+	public int
+		z;
+	[SyncVar]
+	public int
+		h;
+
 	public GameObject UnitOnTile = null;
 
 	Renderer theRenderer;
@@ -27,6 +40,7 @@ public class TileInfo : MonoBehaviour
 	{
 		theRenderer = gameObject.GetComponent<Renderer> ();
 		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
+	
 	}
 	
 	// Update is called once per frame
@@ -39,7 +53,7 @@ public class TileInfo : MonoBehaviour
 	{
 		startColor = theRenderer.material.color;
 
-		if (logic.canHeroMoveToTile (logic.getSelectedObject (), this)) {
+		if (GameLogicUtils.canHeroMoveToTile (logic.getSelectedObject (), this)) {
 			theRenderer.material.color = Color.green;
 		} else {
 			theRenderer.material.color = Color.red;
@@ -57,6 +71,7 @@ public class TileInfo : MonoBehaviour
 		if (Input.GetMouseButtonDown (1)) {
 			Debug.Log ("Right Mouse Clicked");
 			logic.MoveSelected (this);
+
 		}
 
 

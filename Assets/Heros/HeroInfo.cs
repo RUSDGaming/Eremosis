@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class HeroInfo : MonoBehaviour
+public class HeroInfo : NetworkBehaviour
 {
 
 	public float health;
@@ -11,18 +12,20 @@ public class HeroInfo : MonoBehaviour
 	public float height;
 	public float range;
 	public float cost;
-	public int player = 1 ;
+	[SyncVar]
+	public int player;
 	private GameLogic logic;
 	public TileInfo tile;
 	Renderer theRenderer;
 	public Material player1Mat;
 	public Material player2Mat;
 
-	public Color startColor;
+	Color startColor;
 
 	// Use this for initialization
 	void Start ()
 	{	
+		Debug.Log ("hero info was started");
 		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
 		theRenderer = gameObject.GetComponent<Renderer> ();
 
