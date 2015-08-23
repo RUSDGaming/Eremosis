@@ -12,12 +12,12 @@ public class GameLogicUtils : MonoBehaviour
 	{
 			
 		if (heroInfo == null || tileInfo == null) {
-			Debug.Log ("something was null");
+			//Debug.Log ("something was null");
 			return false;
 		}
 		
 		if (tileInfo.UnitOnTile != null) {
-			Debug.Log ("something was on the tile");
+			//Debug.Log ("something was on the tile");
 			return false;
 		}
 		

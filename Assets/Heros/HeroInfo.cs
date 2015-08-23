@@ -13,7 +13,8 @@ public class HeroInfo : NetworkBehaviour
 	public float range;
 	public float cost;
 	[SyncVar]
-	public int player;
+	public int
+		player;
 	private GameLogic logic;
 	public TileInfo tile;
 	Renderer theRenderer;
@@ -70,7 +71,6 @@ public class HeroInfo : NetworkBehaviour
 			logic.SetSelectedObject (this);
 		}
 		if (Input.GetMouseButtonDown (1)) {
-			Debug.Log ("unit was attacked");
 			logic.Attack (this);
 		}
 	}

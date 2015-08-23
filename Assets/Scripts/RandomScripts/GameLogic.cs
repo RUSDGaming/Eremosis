@@ -21,11 +21,13 @@ public class GameLogic : NetworkBehaviour
 
 	public GameObject[,,] map;
 
-
+	
 	public MapGenerator mapGen;
 	
 
-	//private int playerTurn = 1;
+	private int playerTurn = 1;
+	public bool playerMoved = false;
+	public bool playerAttacked = false;
 
 	//private TurnState turnState = TurnState.MOVE;
 
@@ -35,20 +37,33 @@ public class GameLogic : NetworkBehaviour
 	void Start ()
 	{
 		Debug.Log ("Generating Map");
+
 		mapGen.BuildMap ();
 		map = mapGen.map;
 		StartCoroutine (GenerateArmies (2));
+		
+		loadNetworkObject ();
 
-		networkMaster = (NetworkMaster)FindObjectOfType (typeof(NetworkMaster));
 		if (isClient) {
 			Debug.Log ("client gamelogic started");
+			networkMaster.CmdImReady ();
 		}
 
 		if (isServer) {
 			Debug.Log ("Server gamelogic started");
+			//SetPlayerID ();
 		}
 	}
-	
+
+
+	public void loadNetworkObject ()
+	{
+		if (isClient) {
+			GameObject go = NetworkManager.singleton.client.connection.playerControllers [0].gameObject;
+			networkMaster = go.GetComponent<NetworkMaster> () as NetworkMaster;
+			//networkMaster = (NetworkMaster)FindObjectOfType (typeof(NetworkMaster));
+		}
+	}
 	// Update is called once per frame
 	void Update ()
 	{
@@ -57,7 +72,7 @@ public class GameLogic : NetworkBehaviour
 	private IEnumerator GenerateArmies (int armyCount)
 	{
 		while (!mapLoaded) {
-			yield return new WaitForSeconds (.01f);
+			yield return new WaitForSeconds (0);
 		}
 
 		//MapFromText mapfromtext = (MapFromText)FindObjectOfType (typeof(MapFromText));
@@ -80,9 +95,9 @@ public class GameLogic : NetworkBehaviour
 	{
 		GameObject hero = (GameObject)Instantiate (Hero, Vector3.zero, Quaternion.identity);
 		armies [i].Add (hero);
-		HeroInfo heroInfo = hero.GetComponent<HeroInfo> ();
+		//HeroInfo heroInfo = hero.GetComponent<HeroInfo> ();
 		GameObject tile = map [0, i * 30, h];
-		Debug.Log (tile);
+		//Debug.Log (tile);
 		TileInfo tileInfo = tile.GetComponentInChildren<TileInfo> ();
 		hero.GetComponent<HeroInfo> ().tile = tileInfo;
 		//heroInfo.tile = tileInfo;
@@ -135,6 +150,8 @@ public class GameLogic : NetworkBehaviour
 
 	public void MoveSelected (TileInfo tileInfo)
 	{
+
+		Debug.Log ("Network Player is: " + Network.player.ToString ());
 		if (mapLoaded)
 		if (this.selectedObject != null) {
 
@@ -150,21 +167,11 @@ public class GameLogic : NetworkBehaviour
 			return;
 		}
 
-		if (this.selectedObject == null) {
-			return;
-		}
-		if (!GameLogicUtils.canHeroAttackUnit (selectedObject, deffendant)) {
-			Debug.Log ("hero was to far away");
-			return;
+		if (this.selectedObject != null) {
+			networkMaster.CmdAttackUnit (selectedObject.tile.x, selectedObject.tile.h, selectedObject.tile.z, deffendant.tile.x, deffendant.tile.h, deffendant.tile.z);
 		}
 
-		float damage = selectedObject.damage - deffendant.deffense;
-		if (damage > 0) {
-			deffendant.health -= damage;
-		}
-		if (deffendant.health < 0) {
-			GameObject.Destroy (deffendant.gameObject);
-		}
+
 
 	}
 
@@ -197,7 +204,64 @@ public class GameLogic : NetworkBehaviour
 		return tileObject;
 	}
 
+//	[Server]
+//	void SetPlayerID ()
+//	{
+//
+//		//GameObject go = NetworkManager.singleton.client.connection.playerControllers [0].gameObject;
+//		List<NetworkConnection> connections = NetworkServer.connections;
+//		int cnum = 0;
+//		foreach (NetworkConnection c in connections) {
+//			// forwhatever reason there are null connections in that list..... wtf
+//			if (c != null) {
+//				if (c.playerControllers != null) {
+//					foreach (PlayerController pc in c.playerControllers) {
+//
+//						PlayerIdentity pi = pc.gameObject.GetComponent<PlayerIdentity> ();
+//						cnum ++;
+//						Debug.Log ("thhis many connectections:" + cnum);
+//						Debug.Log ("c.connectionid: " + c.connectionId);
+//						pi.PlayerNumber = cnum;
+//						pi.ConnectionId = c.connectionId;
+//
+//					}
+//				}
+//			}
+//		}
+//	}
 
+
+	public bool isPlayersTurn (int playerNum)
+	{
+		if (playerNum == playerTurn) {
+			Debug.Log ("Its not your turn Dingus!");
+			return true;
+		}
+		return false;
+	}
+
+	public void AttackFinished ()
+	{
+		playerAttacked = true;
+		TurnFinished ();
+	}
+
+	public void MoveFinished ()
+	{
+		playerMoved = true;
+	}
+
+	public void TurnFinished ()
+	{
+		if (playerTurn == 1) {
+			playerTurn = 2;
+		} else {
+			playerTurn = 1;
+		}
+
+		playerAttacked = false;
+		playerMoved = true;
+	}
 
 
 }

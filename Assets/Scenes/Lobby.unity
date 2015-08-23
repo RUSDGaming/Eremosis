@@ -97,6 +97,7 @@ GameObject:
   - 4: {fileID: 286456660}
   - 114: {fileID: 286456659}
   - 114: {fileID: 286456658}
+  - 114: {fileID: 286456661}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -168,7 +169,7 @@ MonoBehaviour:
     m_MaxSentMessageQueueSize: 128
     m_IsAcksLong: 0
     m_Channels: []
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseSimulator: 0
   m_SimulatedLatency: 1
   m_PacketLossPercentage: 0
@@ -179,7 +180,7 @@ MonoBehaviour:
   matchName: default
   matchSize: 4
   m_ShowLobbyGUI: 1
-  m_MaxPlayers: 2
+  m_MaxPlayers: 4
   m_MaxPlayersPerConnection: 1
   m_LobbyPlayerPrefab: {fileID: 11458076, guid: 57dfd999ad4a4204ea1e6537fa8fbaf8,
     type: 2}
@@ -199,6 +200,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &286456661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 286456657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9923e9e41700b9f4cbf17360fa492c21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &428778232
 GameObject:
   m_ObjectHideFlags: 0

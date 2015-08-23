@@ -79,15 +79,6 @@ public class MapGenerator : NetworkBehaviour
 	void Start ()
 	{
 		logic = (GameLogic)FindObjectOfType (typeof(GameLogic));
-		Debug.Log ("starting something");
-
-		if (isServer) {
-			Debug.Log ("network is a server");
-			//BuildMap ();
-		} else {
-			Debug.Log ("Network is not a server.....");
-		}
-		//StartCoroutine (BuildMap ());
 		
 	}
 	
