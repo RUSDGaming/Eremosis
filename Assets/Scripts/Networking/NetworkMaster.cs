@@ -69,8 +69,8 @@ public class NetworkMaster : NetworkBehaviour
 			}
 			// get the clients to do this
 			RpcMoveUnit (aX, aZ, aH, bX, bZ, bH);
+
 		}
-		logic.MoveFinished ();
 		
 	}
 
@@ -120,6 +120,8 @@ public class NetworkMaster : NetworkBehaviour
 		heroInfo.tile = tileInfo;
 		heroInfo.transform.position = movePos;
 		tileInfo.UnitOnTile = heroInfo.gameObject;
+
+		logic.MoveFinished ();
 	}
 
 
@@ -178,8 +180,8 @@ public class NetworkMaster : NetworkBehaviour
 			}			
 			// get the client to do this..
 			RpcAttackUnit (aX, aZ, aH, bX, bZ, bH);
+			logic.AttackFinished ();
 		}
-		logic.AttackFinished ();
 
 	}
 
@@ -252,6 +254,27 @@ public class NetworkMaster : NetworkBehaviour
 		numConnected ++;
 		return numConnected;
 	}
+
+	[Command]
+	public void CmdDoneWithTurn ()
+	{
+
+		if (logic.isPlayersTurn (getPlayerIdByConnection (connectionToClient))) {
+			if (isServer && !isClient) {
+				logic.TurnFinished ();
+			}			
+			// get the client to do this..
+			RpcDoneWithTurn ();
+		}
+
+	}
+	[ClientRpc]
+	public void RpcDoneWithTurn ()
+	{
+		logic.TurnFinished ();
+	}
+
+
 
 
 }

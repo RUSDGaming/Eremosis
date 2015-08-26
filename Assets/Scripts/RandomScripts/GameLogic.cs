@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class GameLogic : NetworkBehaviour
 {
@@ -11,6 +12,14 @@ public class GameLogic : NetworkBehaviour
 		MOVE,
 		ATTACK
 	}
+
+	public Text TitleText;
+	public Text AttackText;
+	public Text DeffenseText;
+	public Text RangeText;
+	public Text MoveText;
+	public Text HealthText;
+
 
 
 	public List<List<GameObject>> armies = new List<List<GameObject>> ();
@@ -116,9 +125,25 @@ public class GameLogic : NetworkBehaviour
 	{
 		if (gameObject == this.selectedObject) {
 			this.selectedObject = null;
+			TitleText.text = "Unit Info (?)"; 
+			AttackText.text = "Attack (?)"; 
+			DeffenseText.text = "Deffense (?)"; 
+			MoveText.text = "Move (?)"; 
+			RangeText.text = "Range (?)"; 
+			HealthText.text = "Health (?)"; 
 			return;
 		}
 		this.selectedObject = gameObject;
+		HeroInfo heroInfo = selectedObject.GetComponent<HeroInfo> ();
+
+		if (heroInfo != null) {
+			TitleText.text = "Unit Info (" + heroInfo.player + ")"; 
+			AttackText.text = "Attack (" + heroInfo.damage + ")"; 
+			DeffenseText.text = "Deffense (" + heroInfo.deffense + ")"; 
+			MoveText.text = "Move (" + heroInfo.move + ")"; 
+			RangeText.text = "Range (" + heroInfo.range + ")"; 
+			HealthText.text = "Health (" + heroInfo.health + ")"; 
+		}
 	}
 	public HeroInfo getSelectedObject ()
 	{
@@ -154,10 +179,7 @@ public class GameLogic : NetworkBehaviour
 		Debug.Log ("Network Player is: " + Network.player.ToString ());
 		if (mapLoaded)
 		if (this.selectedObject != null) {
-
-			//NetworkMaster.CmdMoveUnit (selectedObject.gameObject, tileInfo.gameObject);
 			networkMaster.CmdMoveUnit (selectedObject.tile.x, selectedObject.tile.h, selectedObject.tile.z, tileInfo.x, tileInfo.h, tileInfo.z);
-
 		}
 	}
 
@@ -234,9 +256,9 @@ public class GameLogic : NetworkBehaviour
 	public bool isPlayersTurn (int playerNum)
 	{
 		if (playerNum == playerTurn) {
-			Debug.Log ("Its not your turn Dingus!");
 			return true;
 		}
+		Debug.Log ("Its not :" + playerNum + "'s turn, it's :" + playerTurn + "'s turn");
 		return false;
 	}
 
@@ -249,6 +271,7 @@ public class GameLogic : NetworkBehaviour
 	public void MoveFinished ()
 	{
 		playerMoved = true;
+		//TurnFinished ();
 	}
 
 	public void TurnFinished ()
@@ -260,8 +283,15 @@ public class GameLogic : NetworkBehaviour
 		}
 
 		playerAttacked = false;
-		playerMoved = true;
+		playerMoved = false;
 	}
+	public void DoneWithTurn ()
+	{
+		networkMaster.CmdDoneWithTurn ();
+		Debug.Log ("Done with turn");
+	}
+
+
 
 
 }
